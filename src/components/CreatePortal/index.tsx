@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 type ICreatePortal = {
     children: any;
+    parentElement?: HTMLElement;
 };
 
 /**
@@ -14,19 +15,20 @@ type ICreatePortal = {
  */
 class CreatePortal extends React.Component<ICreatePortal> {
     portalContainer: HTMLDivElement;
-    body: HTMLElement;
+    parent: HTMLElement;
 
     // Only executes on the client-side
     componentDidMount() {
-        // Get the document body
-        this.body = document.body;
+        const { parentElement } = this.props;
+
+        this.parent = parentElement ?? document.body;
 
         // Create a container <div /> for React Portal
         this.portalContainer = document.createElement('div');
         this.portalContainer.setAttribute('class', 'lightbox-portal');
 
         // Append the container to the document body
-        this.body.appendChild(this.portalContainer);
+        this.parent.appendChild(this.portalContainer);
 
         // Force a re-render as we're on the client side now
         // children prop will render to portalContainer
@@ -42,7 +44,7 @@ class CreatePortal extends React.Component<ICreatePortal> {
         this.portalContainer.removeEventListener('wheel', this.preventWheel);
 
         // Cleanup Portal from DOM
-        this.body.removeChild(this.portalContainer);
+        this.parent.removeChild(this.portalContainer);
     }
 
     preventWheel = (e: WheelEvent) => e.preventDefault();

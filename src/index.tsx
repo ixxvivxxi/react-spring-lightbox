@@ -37,6 +37,8 @@ type ILightboxProps = {
     singleClickToZoom?: boolean;
     /** Inline styles that are applied to the root lightbox component */
     style?: React.CSSProperties;
+    /** Parent element */
+    parentElement?: HTMLElement;
 };
 
 /**
@@ -70,6 +72,7 @@ const Lightbox = ({
     renderPrevButton = () => null,
     singleClickToZoom = false,
     style = {},
+    parentElement,
 }: ILightboxProps) => {
     // Handle event listeners for keyboard
     useEffect(() => {
@@ -141,7 +144,7 @@ const Lightbox = ({
     }
 
     return (
-        <CreatePortal>
+        <CreatePortal parentElement={parentElement}>
             <PageContainer
                 className={className}
                 isOpen={isOpen}
